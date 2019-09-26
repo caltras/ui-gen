@@ -3,7 +3,7 @@
         <title>user - list</title>
     </head>
     <body>
-        <form action="/user" method="POST" onsubmit="userController.submit()">
+        <form action="/user" method="POST" onsubmit="return userController.submit();">
                 
             <div class="group-button">
                 <button type="button" class="button cancel">
@@ -14,6 +14,6 @@
                 </button>
             </div>
         </form>
-        <script src="js/user/list.js"></script>
+        <script src="user.list.js"></script>
     </body>
 </html>

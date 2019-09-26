@@ -3,7 +3,7 @@
         <title>event - update</title>
     </head>
     <body>
-        <form action="/event" method="POST" onsubmit="eventController.submit()">
+        <form action="/event" method="POST" onsubmit="return eventController.submit();">
                 
             <div class="form-input">
                 <label aria-label="event.id">event.id:</label>
@@ -38,6 +38,6 @@
                 </button>
             </div>
         </form>
-        <script src="js/event/update.js"></script>
+        <script src="event.update.js"></script>
     </body>
 </html>

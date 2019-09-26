@@ -3,7 +3,7 @@
         <title>event - create</title>
     </head>
     <body>
-        <form action="/event" method="PUT" onsubmit="eventController.submit()">
+        <form action="/event" method="PUT" onsubmit="return eventController.submit();">
                 
             <div class="form-input">
                 <label aria-label="event.id">event.id:</label>
@@ -38,6 +38,6 @@
                 </button>
             </div>
         </form>
-        <script src="js/event/create.js"></script>
+        <script src="event.create.js"></script>
     </body>
 </html>

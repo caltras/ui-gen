@@ -3,7 +3,7 @@
         <title>event - list</title>
     </head>
     <body>
-        <form action="/event" method="POST" onsubmit="eventController.submit()">
+        <form action="/event" method="POST" onsubmit="return eventController.submit();">
                 
             <div class="group-button">
                 <button type="button" class="button cancel">
@@ -14,6 +14,6 @@
                 </button>
             </div>
         </form>
-        <script src="js/event/list.js"></script>
+        <script src="event.list.js"></script>
     </body>
 </html>

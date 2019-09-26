@@ -1,8 +1,8 @@
 const metadata = require('../test/ex.metadata');
 const transformer = require('./transformer');
-const printer = require('./printer');
+const render = require('./render');
 
 const templates = transformer(metadata);
 
-printer(templates, "html");
+render(templates, "html");
 

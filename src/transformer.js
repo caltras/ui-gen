@@ -12,7 +12,7 @@ const input = (obj) =>{
     
 };
 const form = (elements, domain, page)=> {
-    return `<form action="/${domain}" method="${page === 'create' ? 'PUT': 'POST'}" onsubmit="${domain}Controller.submit()">
+    return `<form action="/${domain}" method="${page === 'create' ? 'PUT': 'POST'}" onsubmit="return ${domain}Controller.submit();">
                 ${elements.join('')}
             <div class="group-button">
                 <button type="button" class="button cancel">

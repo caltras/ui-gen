@@ -3,7 +3,7 @@
         <title>user - create</title>
     </head>
     <body>
-        <form action="/user" method="PUT" onsubmit="userController.submit()">
+        <form action="/user" method="PUT" onsubmit="return userController.submit();">
                 
             <div class="form-input">
                 <label aria-label="user.id">user.id:</label>
@@ -38,6 +38,6 @@
                 </button>
             </div>
         </form>
-        <script src="js/user/create.js"></script>
+        <script src="user.create.js"></script>
     </body>
 </html>
