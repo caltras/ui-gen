@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>user - create</title>
+    </head>
+    <body>
+        <form action="/user" method="PUT" onsubmit="userController.submit()">
+                
+            <div class="form-input">
+                <label aria-label="user.id">user.id:</label>
+                <input type="input"  
+                    name="user_id" 
+                    label="user.id" aria-label="user.id">
+            </div>
+            <div class="form-input">
+                <label aria-label="user.name">user.name:</label>
+                <input type="input"  
+                    name="user_name" 
+                    label="user.name" aria-label="user.name">
+            </div>
+            <div class="form-input">
+                <label aria-label="user.username">user.username:</label>
+                <input type="input"  
+                    name="user_username" 
+                    label="user.username" aria-label="user.username">
+            </div>
+            <div class="form-input">
+                <label aria-label="user.password">user.password:</label>
+                <input type="password"  
+                    name="user_password" 
+                    label="user.password" aria-label="user.password">
+            </div>
+            <div class="group-button">
+                <button type="button" class="button cancel">
+                    label.cancel
+                </button>
+                <button type="submit" class="button submit">
+                    label.save
+                </button>
+            </div>
+        </form>
+        <script src="js/user/create.js"></script>
+    </body>
+</html>

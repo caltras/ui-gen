@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>event - create</title>
+    </head>
+    <body>
+        <form action="/event" method="PUT" onsubmit="eventController.submit()">
+                
+            <div class="form-input">
+                <label aria-label="event.id">event.id:</label>
+                <input type="input"  
+                    name="event_id" 
+                    label="event.id" aria-label="event.id">
+            </div>
+            <div class="form-input">
+                <label aria-label="user.name">user.name:</label>
+                <input type="select"  
+                    name="user_name" 
+                    label="user.name" aria-label="user.name">
+            </div>
+            <div class="form-input">
+                <label aria-label="event.start">event.start:</label>
+                <input type="date_time"  
+                    name="event_start" 
+                    label="event.start" aria-label="event.start">
+            </div>
+            <div class="form-input">
+                <label aria-label="event.description">event.description:</label>
+                <input type="textarea"  
+                    name="event_description" 
+                    label="event.description" aria-label="event.description">
+            </div>
+            <div class="group-button">
+                <button type="button" class="button cancel">
+                    label.cancel
+                </button>
+                <button type="submit" class="button submit">
+                    label.save
+                </button>
+            </div>
+        </form>
+        <script src="js/event/create.js"></script>
+    </body>
+</html>
