@@ -1,32 +1,35 @@
-<html>
-    <head>
-        <title>event - update</title>
-    </head>
-    <body>
-        <form action="/event" method="POST" onsubmit="return eventController.submit();">
+import React, { Component } from "react";
+
+export default class EventUpdateForm extends Component{
+    render(){
+        return (
+            <div className="Update-container">
+                <h1 className="title">Event - Update</h1>
+                <div className="container">
+                    <form action="/event" method="POST" onsubmit="return eventController.submit();">
                 
             <div class="form-input">
-                <label aria-label="event.id">event.id:</label>
+                <label aria-label="event.id">Id:</label>
                 <input type="input"  
-                    name="event_id" 
+                    name="id" 
                     label="event.id" aria-label="event.id">
             </div>
             <div class="form-input">
-                <label aria-label="user.name">user.name:</label>
+                <label aria-label="user.name">User.name:</label>
                 <input type="select"  
                     name="user_name" 
                     label="user.name" aria-label="user.name">
             </div>
             <div class="form-input">
-                <label aria-label="event.start">event.start:</label>
+                <label aria-label="event.start">Start:</label>
                 <input type="date_time"  
-                    name="event_start" 
+                    name="start" 
                     label="event.start" aria-label="event.start">
             </div>
             <div class="form-input">
-                <label aria-label="event.description">event.description:</label>
+                <label aria-label="event.description">Description:</label>
                 <input type="textarea"  
-                    name="event_description" 
+                    name="description" 
                     label="event.description" aria-label="event.description">
             </div>
             <div class="group-button">
@@ -38,6 +41,8 @@
                 </button>
             </div>
         </form>
-        <script src="event.update.js"></script>
-    </body>
-</html>
+                </div>
+            </div>
+        );
+    }
+}

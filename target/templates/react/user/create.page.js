@@ -1,32 +1,35 @@
-<html>
-    <head>
-        <title>user - create</title>
-    </head>
-    <body>
-        <form action="/user" method="PUT" onsubmit="return userController.submit();">
+import React, { Component } from "react";
+
+export default class UserCreateForm extends Component{
+    render(){
+        return (
+            <div className="Create-container">
+                <h1 className="title">User - Create</h1>
+                <div className="container">
+                    <form action="/user" method="PUT" onsubmit="return userController.submit();">
                 
             <div class="form-input">
-                <label aria-label="user.id">user.id:</label>
+                <label aria-label="user.id">Id:</label>
                 <input type="input"  
-                    name="user_id" 
+                    name="id" 
                     label="user.id" aria-label="user.id">
             </div>
             <div class="form-input">
-                <label aria-label="user.name">user.name:</label>
+                <label aria-label="user.name">Name:</label>
                 <input type="input"  
-                    name="user_name" 
+                    name="name" 
                     label="user.name" aria-label="user.name">
             </div>
             <div class="form-input">
-                <label aria-label="user.username">user.username:</label>
+                <label aria-label="user.username">Username:</label>
                 <input type="input"  
-                    name="user_username" 
+                    name="username" 
                     label="user.username" aria-label="user.username">
             </div>
             <div class="form-input">
-                <label aria-label="user.password">user.password:</label>
+                <label aria-label="user.password">Password:</label>
                 <input type="password"  
-                    name="user_password" 
+                    name="password" 
                     label="user.password" aria-label="user.password">
             </div>
             <div class="group-button">
@@ -38,6 +41,8 @@
                 </button>
             </div>
         </form>
-        <script src="user.create.js"></script>
-    </body>
-</html>
+                </div>
+            </div>
+        );
+    }
+}

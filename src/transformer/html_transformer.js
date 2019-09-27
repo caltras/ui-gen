@@ -1,12 +1,38 @@
+const _ = require('lodash');
 const translateService = (key) =>{
     return key;
+}
+const elementFactory = (obj, page) =>{
+    switch (page){
+        case "create":
+        case "update":
+            return input(obj);
+        case "list":
+            return column(obj);
+    }
+}
+const column = (obj) =>{
+    return `<td>${obj.name ? _.capitalize(obj.name) : obj.label}</td>`;
+}
+const table = (elements, domain, page) =>{
+    return `<table class="${domain}-list">
+            <thead class="${domain}-list-thead">
+                <tr>
+                    ${elements.join('')}
+                </tr>
+            </thead>
+            <tbody class="${domain}-list-tbody">
+            </tbody>
+            <tfoot class="${domain}-list-tfoot">
+            <tfoot>
+        </table>`;
 }
 const input = (obj) =>{
     return `
             <div class="form-input">
-                <label aria-label="${obj.label}">${obj.label}:</label>
+                <label aria-label="${obj.label}">${obj.name ? _.capitalize(obj.name) : obj.label}:</label>
                 <input type="${obj.compType}" ${obj.required ? 'required' : ''} 
-                    name="${obj.label.replace(/\./g,"_")}" 
+                    name="${obj.name.replace(/\./g,"_")}" 
                     label="${obj.label}" aria-label="${obj.label}">
             </div>`;
     
@@ -37,12 +63,19 @@ module.exports = (metadata) =>{
             const templatePage = templates[d][k] = templates[d][k] || { elements : []};
             if (page.fields){
                 Object.keys(page.fields).forEach ( (f) =>{
-                    const templateInput = input(page.fields[f]);
-                    //console.log(templateInput);
+                    const templateInput = elementFactory(page.fields[f], k);
                     templatePage.elements.push(templateInput);
                 });
+                templates[d][k] = form(templatePage.elements, d, k);
+            } else {
+                if (page.table){
+                    Object.keys(page.table).forEach ( (f) =>{
+                        const templateInput = elementFactory(page.table[f], k);
+                        templatePage.elements.push(templateInput);
+                    });
+                    templates[d][k] = table(templatePage.elements, d, k);
+                }
             }
-            templates[d][k] = form(templatePage.elements, d, k);
             
         });
     });
