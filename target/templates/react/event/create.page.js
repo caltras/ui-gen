@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-export default function UserUpdate() {
+export default function EventCreate() {
     
     const [id, setId] = useState();
-    const [name, setName] = useState();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [user, setUser] = useState();
+    const [start, setStart] = useState();
+    const [description, setDescription] = useState();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = (event) =>{
@@ -15,9 +15,9 @@ export default function UserUpdate() {
         if(!loading){
             if (validate()) {
                 setLoading(true);
-                fetch(`/user`, 
+                fetch(`/event`, 
                     { 
-                        method: 'POST', 
+                        method: 'PUT', 
                         body: getProperties() 
                     })
                 .then( (response) =>{
@@ -32,7 +32,7 @@ export default function UserUpdate() {
     }
 
     const getProperties = () => {
-        return { id, name, username, password };
+        return { id, user, start, description };
     }
     const validate = () => {
         const props = getProperties();
@@ -50,38 +50,38 @@ export default function UserUpdate() {
         }
     }
     return (
-        <div className="user-container">
-            <h1 className="title">User - Update</h1>
+        <div className="event-container">
+            <h1 className="title">Event - Create</h1>
             <div className="container">
-                <form action="/user" method="POST" onSubmit={handleSubmit}>
+                <form action="/event" method="PUT" onSubmit={handleSubmit}>
                     
                     <div class="form-input">
-                        <label aria-label="user.id">Id:</label>
+                        <label aria-label="event.id">Id:</label>
                         <input type="input"  
                             name="id" 
-                            label="user.id" aria-label="user.id"
+                            label="event.id" aria-label="event.id"
                             onChange={ (e)=> setId(e.target.value)}/>
                     </div>
                     <div class="form-input">
-                        <label aria-label="user.name">Name:</label>
-                        <input type="input"  
-                            name="name" 
+                        <label aria-label="user.name">User.name:</label>
+                        <input type="select"  
+                            name="user_name" 
                             label="user.name" aria-label="user.name"
-                            onChange={ (e)=> setName(e.target.value)}/>
+                            onChange={ (e)=> setUser(e.target.value)}/>
                     </div>
                     <div class="form-input">
-                        <label aria-label="user.username">Username:</label>
-                        <input type="input"  
-                            name="username" 
-                            label="user.username" aria-label="user.username"
-                            onChange={ (e)=> setUsername(e.target.value)}/>
+                        <label aria-label="event.start">Start:</label>
+                        <input type="date_time"  
+                            name="start" 
+                            label="event.start" aria-label="event.start"
+                            onChange={ (e)=> setStart(e.target.value)}/>
                     </div>
                     <div class="form-input">
-                        <label aria-label="user.password">Password:</label>
-                        <input type="password"  
-                            name="password" 
-                            label="user.password" aria-label="user.password"
-                            onChange={ (e)=> setPassword(e.target.value)}/>
+                        <label aria-label="event.description">Description:</label>
+                        <input type="textarea"  
+                            name="description" 
+                            label="event.description" aria-label="event.description"
+                            onChange={ (e)=> setDescription(e.target.value)}/>
                     </div>
                     <div class="group-button">
                         <button type="button" class="button cancel">

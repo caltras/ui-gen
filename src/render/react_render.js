@@ -1,28 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
+const routeTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/routes.js.tpl'),'utf8');
 
 module.exports = (metadata, templates, type, persist=true) =>{
     const domains = Object.keys(templates)
-    //const master = fs.readFileSync(path.join(__dirname,'..',`assets/template/${type}/master.html`), 'utf8');
-    
+    const routes = [];
+    const imports = [];
     const mapTemplates = {};
     domains.forEach ( (d) => {
         const pages = Object.keys(templates[d]);
         //user
         pages.forEach( (k) => {
             const page = templates[d][k];
-            //const js = fs.readFileSync(path.join(__dirname,'..',`assets/template/${type}/${k}.js.tpl`), 'utf8');
-
-            /*let finalTemplate = master.format("template", page);
-            finalTemplate = finalTemplate.format("domain", d)
-            finalTemplate = finalTemplate.format("page", k);*/
-
-            //mapTemplates[`templates/${d}/${d}.${k}.js`] =  js.format("domain", d).format("method", k === "create" ? "PUT": "POST");
-
-            /*if(k==="list"){
-                const fields = Object.keys(metadata[d][k].table)
-                mapTemplates[`templates/${d}/${d}.${k}.js`] = mapTemplates[`templates/${d}/${d}.${k}.js`].format('fields', "'"+fields.join("','")+"'");
-            }*/
 
             mapTemplates[`templates/${type}/${d}/${k}.js`] = page;
 
@@ -42,12 +32,21 @@ module.exports = (metadata, templates, type, persist=true) =>{
                 fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/${d}/${k}.page.js`), 
                                 mapTemplates[`templates/${type}/${d}/${k}.js`],
                                 'utf8');
-                // fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/${d}/${k}.html`), 
-                //                 finalTemplate,
-                //                 'utf8');
+                // import Home from '../components/home';
+                imports.push(`import ${_.capitalize(d)}${_.capitalize(k)} from '../${d}/${k}.page';`);
+                routes.push(`<Route exact={true} path="/${d}/${k}" component={${_.capitalize(d)}${_.capitalize(k)}}/>`)
             }
             
         });
     });
+    if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/routes`))){
+        fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/routes`));
+    }
+    fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/routes/routes.js`), 
+                            routeTemplate.format('routes', routes.join('\n        ')).format('imports', imports.join(`\n`)),
+                            'utf8');
+    fs.copyFileSync(path.join(__dirname, `../assets/template/${type}/app.js.tpl`),path.join(__dirname,'../..',`target/templates/${type}/app.js`));
+
+
     return mapTemplates;
 }
