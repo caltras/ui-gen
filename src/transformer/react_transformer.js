@@ -2,6 +2,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const formClassTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/form.component.js.tpl'),'utf8');
+const listClassTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/list.js.tpl'),'utf8');
 
 const translateService = (key) =>{
     return key;
@@ -18,18 +19,35 @@ const elementFactory = (obj, page, f) =>{
 const column = (obj, field) =>{
     return `<td>${obj.name ? _.capitalize(obj.name) : obj.label}</td>`;
 }
-const table = (elements, domain, page) =>{
-    return `<table class="${domain}-list">
-            <thead class="${domain}-list-thead">
-                <tr>
-                    ${elements.join('')}
-                </tr>
-            </thead>
-            <tbody class="${domain}-list-tbody">
-            </tbody>
-            <tfoot class="${domain}-list-tfoot">
-            <tfoot>
-        </table>`;
+const table = (elements, domain, page, fields) =>{
+    const template = `<table class="${domain}-list">
+                <thead class="${domain}-list-thead">
+                    <tr>
+                        ${elements.join('')}
+                    </tr>
+                </thead>
+                <tbody class="${domain}-list-tbody">
+                    { 
+                        data.map ( (d) => {
+                            return (<tr> { 
+                                getKeys().map ( (k) => {
+                                    return (<td>{d[k]}</td>);
+                                }) 
+                            }</tr>);
+                        })
+                    }
+                </tbody>
+                <tfoot class="${domain}-list-tfoot">
+                </tfoot>
+            </table>`;
+    return listClassTemplate.format('template', template)
+                    .format('domain-ref', domain)
+                    .format('url', `/${domain}`)
+                    .format('className',_.capitalize(domain)+_.capitalize(page))
+                    .format("domain", _.capitalize(domain))
+                    .format("page", _.capitalize(page))
+                    .format("method", 'GET')
+                    .format("fields", fields.join(', '));
 }
 const hooksUtil = (obj, field) =>{
     const ref = field.substring(field.lastIndexOf('.') + 1);
@@ -99,8 +117,9 @@ module.exports = (metadata) =>{
                     Object.keys(page.table).forEach ( (f) =>{
                         const templateInput = elementFactory(page.table[f], k);
                         templatePage.elements.push(templateInput);
+                        fields.push(f);
                     });
-                    templates[d][k] = table(templatePage.elements, d, k);
+                    templates[d][k] = table(templatePage.elements, d, k, fields);
                 }
             }
         });
