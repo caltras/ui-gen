@@ -47,7 +47,7 @@ const table = (elements, domain, page, fields) =>{
                     .format("domain", _.capitalize(domain))
                     .format("page", _.capitalize(page))
                     .format("method", 'GET')
-                    .format("fields", fields.join(', '));
+                    .format("fields","'"+fields.join("', '")+"'");
 }
 const hooksUtil = (obj, field) =>{
     const ref = field.substring(field.lastIndexOf('.') + 1);

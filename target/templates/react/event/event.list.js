@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function EventList() {
     
     const [loading, setLoading] = useState(false);
-    const [data, setLData] = useState([]);
+    const [data, setData] = useState([]);
 
     const fetchData = (event) =>{
         setLoading(true);
@@ -31,7 +31,7 @@ export default function EventList() {
     }
 
     const getKeys = () => {
-        return [ id, name, start, description ];
+        return [ 'id', 'name', 'start', 'description' ];
     }
     return (
         <div className="event-table">

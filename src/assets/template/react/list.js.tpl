@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function {{className}}() {
     
     const [loading, setLoading] = useState(false);
-    const [data, setLData] = useState([]);
+    const [data, setData] = useState([]);
 
     const fetchData = (event) =>{
         setLoading(true);

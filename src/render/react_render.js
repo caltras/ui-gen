@@ -29,11 +29,11 @@ module.exports = (metadata, templates, type, persist=true) =>{
                     fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/${d}`));
                 }
 
-                fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/${d}/${k}.page.js`), 
+                fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/${d}/${d}.${k}.js`), 
                                 mapTemplates[`templates/${type}/${d}/${k}.js`],
                                 'utf8');
                 // import Home from '../components/home';
-                imports.push(`import ${_.capitalize(d)}${_.capitalize(k)} from '../${d}/${k}.page';`);
+                imports.push(`import ${_.capitalize(d)}${_.capitalize(k)} from '../${d}/${d}.${k}';`);
                 routes.push(`<Route exact={true} path="/${d}/${k}" component={${_.capitalize(d)}${_.capitalize(k)}}/>`)
             }
             

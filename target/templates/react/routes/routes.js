@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import UserCreate from '../user/create.page';
-import UserUpdate from '../user/update.page';
-import UserList from '../user/list.page';
-import EventCreate from '../event/create.page';
-import EventUpdate from '../event/update.page';
-import EventList from '../event/list.page';
+import UserCreate from '../user/user.create';
+import UserUpdate from '../user/user.update';
+import UserList from '../user/user.list';
+import EventCreate from '../event/event.create';
+import EventUpdate from '../event/event.update';
+import EventList from '../event/event.list';
 
 export const Routes = (
     <Switch>
