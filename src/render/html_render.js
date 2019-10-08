@@ -1,10 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = (metadata, templates, type, persist=true) =>{
+module.exports = (projectName, metadata, templates, type, persist=true) =>{
     const domains = Object.keys(templates)
     const master = fs.readFileSync(path.join(__dirname,'..',`assets/template/${type}/master.html`), 'utf8');
-    
     const mapTemplates = {};
     domains.forEach ( (d) => {
         const pages = Object.keys(templates[d]);

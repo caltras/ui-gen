@@ -1,13 +1,24 @@
-const fs = require('fs');
+const fs = require("fs-extra");
 const path = require('path');
 const _ = require('lodash');
 const routeTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/routes.js.tpl'),'utf8');
-
-module.exports = (metadata, templates, type, persist=true) =>{
+const createSrcFolder = (type) =>{
+    if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}`))){
+        fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}`));
+    }
+    if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/src`))){
+        fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/src`));
+    }
+}
+module.exports = (projectName, metadata, templates, type, persist=true) =>{
+    const packageJSON = fs.readFileSync(path.join(__dirname, `../assets/template/${type}/package.json.tpl`), 'utf8');
     const domains = Object.keys(templates)
     const routes = [];
     const imports = [];
     const mapTemplates = {};
+    
+    createSrcFolder(type);
+
     domains.forEach ( (d) => {
         const pages = Object.keys(templates[d]);
         //user
@@ -18,18 +29,15 @@ module.exports = (metadata, templates, type, persist=true) =>{
 
             if (persist){
                 // create, update, list
-                if (!fs.existsSync(path.join(__dirname,'../..',`target/templates`))){
-                    fs.mkdirSync(path.join(__dirname,'../..',`target/templates`));
-                }
-                if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}`))){
-                    fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}`));
+                if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/src`))){
+                    fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/src`));
                 }
                 
-                if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/${d}`))){
-                    fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/${d}`));
+                if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/src/${d}`))){
+                    fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/src/${d}`));
                 }
 
-                fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/${d}/${d}.${k}.js`), 
+                fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/src/${d}/${d}.${k}.js`), 
                                 mapTemplates[`templates/${type}/${d}/${k}.js`],
                                 'utf8');
                 // import Home from '../components/home';
@@ -39,13 +47,23 @@ module.exports = (metadata, templates, type, persist=true) =>{
             
         });
     });
-    if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/routes`))){
-        fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/routes`));
+    if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}/src/routes`))){
+        fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/src/routes`));
     }
-    fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/routes/routes.js`), 
+    fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/src/routes/routes.js`), 
                             routeTemplate.format('routes', routes.join('\n        ')).format('imports', imports.join(`\n`)),
                             'utf8');
-    fs.copyFileSync(path.join(__dirname, `../assets/template/${type}/app.js.tpl`),path.join(__dirname,'../..',`target/templates/${type}/app.js`));
+                                
+    fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/package.json`), 
+                        packageJSON.format('project', _.kebabCase(projectName)), 
+                        'utf8');
+                            
+    fs.copyFileSync(path.join(__dirname, `../assets/template/${type}/style.css`),path.join(__dirname,'../..',`target/templates/${type}/src/style.css`));
+    fs.copyFileSync(path.join(__dirname, `../assets/template/${type}/app.js.tpl`),path.join(__dirname,'../..',`target/templates/${type}/src/index.js`));
+    
+    fs.copySync(path.join(__dirname, `../assets/template/${type}/public`), path.join(__dirname,'../..',`target/templates/${type}/public`));
+    fs.copySync(path.join(__dirname, `../assets/template/${type}/locales`), path.join(__dirname,'../..',`target/templates/${type}/src/locales`));
+    
 
 
     return mapTemplates;

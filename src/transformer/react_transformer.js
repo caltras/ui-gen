@@ -5,7 +5,7 @@ const formClassTemplate = fs.readFileSync(path.join(__dirname, '../assets/templa
 const listClassTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/list.js.tpl'),'utf8');
 
 const translateService = (key) =>{
-    return key;
+    return `{ translate('${key}') }`;
 }
 const elementFactory = (obj, page, f) =>{
     switch (page){
@@ -20,29 +20,30 @@ const column = (obj, field) =>{
     return `<td>${obj.name ? _.capitalize(obj.name) : obj.label}</td>`;
 }
 const table = (elements, domain, page, fields) =>{
-    const template = `<table class="${domain}-list">
-                <thead class="${domain}-list-thead">
+    const urlAPI = process.env['api-url'];
+    const template = `<table className="${domain}-list">
+                <thead className="${domain}-list-thead">
                     <tr>
                         ${elements.join('')}
                     </tr>
                 </thead>
-                <tbody class="${domain}-list-tbody">
+                <tbody className="${domain}-list-tbody">
                     { 
-                        data.map ( (d) => {
-                            return (<tr> { 
-                                getKeys().map ( (k) => {
-                                    return (<td>{d[k]}</td>);
+                        data.map ( (d, index) => {
+                            return (<tr key={index}> { 
+                                getKeys().map ( (k, index) => {
+                                    return (<td key={'td'+index}>{d[k]}</td>);
                                 }) 
                             }</tr>);
                         })
                     }
                 </tbody>
-                <tfoot class="${domain}-list-tfoot">
+                <tfoot className="${domain}-list-tfoot">
                 </tfoot>
             </table>`;
     return listClassTemplate.format('template', template)
                     .format('domain-ref', domain)
-                    .format('url', `/${domain}`)
+                    .format('url', `${urlAPI}/${domain}`)
                     .format('className',_.capitalize(domain)+_.capitalize(page))
                     .format("domain", _.capitalize(domain))
                     .format("page", _.capitalize(page))
@@ -56,7 +57,7 @@ const hooksUtil = (obj, field) =>{
 const input = (obj, field) =>{
     const ref = field.substring(field.lastIndexOf('.') + 1);
     return `
-                    <div class="form-input">
+                    <div className="form-input">
                         <label aria-label="${obj.label}">${obj.name ? _.capitalize(obj.name) : obj.label}:</label>
                         <input type="${obj.compType}" ${obj.required ? 'required' : ''} 
                             name="${obj.name.replace(/\./g,"_")}" 
@@ -66,21 +67,22 @@ const input = (obj, field) =>{
     
 };
 const form = (elements, domain, page, hooks, fields)=> {
+    const urlAPI = process.env['api-url'];
     const method = page === 'create' ? 'PUT': 'POST';
     const template = `<form action="/${domain}" method="${method}" onSubmit={handleSubmit}>
                     ${elements.join('')}
-                    <div class="group-button">
-                        <button type="button" class="button cancel">
+                    <div className="group-button">
+                        <button type="button" className="button cancel">
                             ${translateService('label.cancel')}
                         </button>
-                        <button type="submit" class="button submit">
+                        <button type="submit" className="button submit">
                             ${translateService('label.save')}
                         </button>
                     </div>
                 </form>`;
     return formClassTemplate.format('template', template)
                             .format('domain-ref', domain)
-                            .format('url', `/${domain}`)
+                            .format('url', `${urlAPI}/${domain}`)
                             .format('className',_.capitalize(domain)+_.capitalize(page))
                             .format("domain", _.capitalize(domain))
                             .format("page", _.capitalize(page))
@@ -89,6 +91,7 @@ const form = (elements, domain, page, hooks, fields)=> {
                             .format("fields", fields.join(', '));
 };
 module.exports = (metadata) =>{
+    
     const domains = Object.keys(metadata)
     const templates = {};
     domains.forEach ( (d) => {

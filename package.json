@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
+    "react-server": "node ./test/server.js & npm start --prefix ./target/templates/react",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +16,10 @@
   "author": "Claudio Traspadini Oliveira",
   "license": "MIT",
   "dependencies": {
+    "fs-extra": "^8.1.0",
     "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "mockserver": "^3.1.1"
   }
 }
