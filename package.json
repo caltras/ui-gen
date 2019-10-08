@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "react-server": "node ./test/server.js & npm start --prefix ./target/templates/react",
+    "react-install": "npm install --prefix ./target/templates/react",
+    "react-server": "npm start && node ./test/server.js & npm start --prefix ./target/templates/react",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
