@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Routes } from './routes/routes';
 import translate from 'counterpart';
@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-        <BrowserRouter children={Routes} basename={"/"} />
+      <BrowserRouter children={Routes} basename={"/"} />  
     );
   }
 }

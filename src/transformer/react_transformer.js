@@ -24,7 +24,7 @@ const table = (elements, domain, page, fields) =>{
     const template = `<table className="${domain}-list">
                 <thead className="${domain}-list-thead">
                     <tr>
-                        ${elements.join('')}
+                        ${elements.join('')}<td></td><td></td>
                     </tr>
                 </thead>
                 <tbody className="${domain}-list-tbody">
@@ -34,7 +34,14 @@ const table = (elements, domain, page, fields) =>{
                                 getKeys().map ( (k, index) => {
                                     return (<td key={'td'+index}>{d[k]}</td>);
                                 }) 
-                            }</tr>);
+                            }
+                            <td>
+                                <button onClick={(e) => handleDelete()}>{translate('label.delete')}</button>
+                            </td>
+                            <td>
+                                <button onClick={(e) => handleEdit()}>{translate('label.edit')}</button>
+                            </td>
+                            </tr>);
                         })
                     }
                 </tbody>

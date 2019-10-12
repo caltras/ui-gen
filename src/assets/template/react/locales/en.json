@@ -1,6 +1,8 @@
 {
     "label" : {
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete"
     }
 }
