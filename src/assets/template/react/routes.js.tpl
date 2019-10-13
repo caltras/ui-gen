@@ -5,10 +5,10 @@ import { Route, Switch, Link } from "react-router-dom";
 
 export const Routes = (
     <div>
-        <div class="menu">
+        <div className="menu">
         {{actions}}
         </div>
-        <div class="content">
+        <div className="content">
             <Switch>
                 {{routes}}
             </Switch>

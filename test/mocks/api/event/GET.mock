@@ -1,6 +1,0 @@
-HTTP/1.1 200 OK
-Content-Type: application/json
-Access-Control-Allow-Origin: *
-Connection: Keep-Alive
-
-#import './event.json';
