@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./src/index.js",
     "react-install": "npm install --prefix ./target/templates/react",
-    "react-server": "npm start && node ./test/server.js & npm start --prefix ./target/templates/react",
+    "mock-server": "node ./test/server.js",
+    "kill-mock-server": "fuser -k 8000/tcp",
+    "react-server": "npm run kill-mock-server & npm run mock-server & npm start --prefix ./target/templates/react",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

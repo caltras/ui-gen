@@ -8,10 +8,18 @@ const fs = require('fs');
 const express = require('express')();
 var bodyParser = require('body-parser'); 
 var cors = require('cors');
+var whitelist = ['http://localhost:3000']
 var corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
 }
+
+express.use(cors(corsOptions));
 
 const app  = () => {
     this.routes = {};
@@ -42,6 +50,7 @@ const app  = () => {
                 resp.status(200);
                 resp.json(this.db[domain]);
             } else{
+                resp.status(400);
                 resp.send();
             }
         };
@@ -121,7 +130,7 @@ const app  = () => {
         express.use(bodyParser.urlencoded({     // to support URL-encoded bodies
             extended: true
         }));
-        express.use(cors(corsOptions));
+        
         express.listen(8000);
     }
     return this;

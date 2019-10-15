@@ -12,7 +12,7 @@ export default function {{className}}() {
             setLoading(true);
             fetch(`{{url}}`, 
                 { 
-                    method: '{{method}}' 
+                    method: '{{method}}'
                 })
             .then( (response) =>{
                 return response.json();
