@@ -3,6 +3,7 @@ const path = require('path');
 const _ = require('lodash');
 const routeTemplate = fs.readFileSync(path.join(__dirname, '../assets/template/react/routes.js.tpl'),'utf8');
 const app = fs.readFileSync(path.join(__dirname, `../assets/template/react/app.js.tpl`), 'utf8');
+const prettier = require('prettier');
 
 const createSrcFolder = (type) =>{
     if (!fs.existsSync(path.join(__dirname,'../..',`target/templates/${type}`))){
@@ -31,7 +32,12 @@ module.exports = (projectName, metadata, templates, type, persist=true) =>{
             mapTemplates[`templates/${type}/${d}/${k}.js`] = page;
             // import Home from '../components/home';
             imports.push(`import ${_.capitalize(d)}${_.capitalize(k)} from '../${d}/${d}.${k}';`);
-            routesTemplates.push(`<Route exact={true} path="/${d}/${k}" component={${_.capitalize(d)}${_.capitalize(k)}}/>`)
+            if (k === "update"){
+                routesTemplates.push(`<Route exact={true} path="/${d}/${k}/:id" component={${_.capitalize(d)}${_.capitalize(k)}}/>`)
+            } else {
+                routesTemplates.push(`<Route exact={true} path="/${d}/${k}" component={${_.capitalize(d)}${_.capitalize(k)}}/>`)
+            }
+            
             if ( !routes[d] ){
                 routes[d] = [];
             }
@@ -48,7 +54,7 @@ module.exports = (projectName, metadata, templates, type, persist=true) =>{
                 }
 
                 fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/src/${d}/${d}.${k}.js`), 
-                                mapTemplates[`templates/${type}/${d}/${k}.js`],
+                                prettier.format(mapTemplates[`templates/${type}/${d}/${k}.js`]),
                                 'utf8');
                 
             }
@@ -70,14 +76,15 @@ module.exports = (projectName, metadata, templates, type, persist=true) =>{
             fs.mkdirSync(path.join(__dirname,'../..',`target/templates/${type}/src/routes`));
         }
         fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/src/routes/routes.js`), 
-                                routeTemplate
+                        prettier.format(routeTemplate
                                     .format('routes', routesTemplates.join('\n        '))
                                     .format('imports', imports.join(`\n`))
-                                    .format('actions', actions.join('\n')),
+                                    .format('actions', actions.join('\n'))
+                        ),
                                 'utf8');
                                     
         fs.writeFileSync(path.join(__dirname,'../..',`target/templates/${type}/package.json`), 
-                            packageJSON.format('project', _.kebabCase(projectName)), 
+                        packageJSON.format('project', _.kebabCase(projectName)), 
                             'utf8');
         
         fs.copySync(path.join(__dirname, `../assets/template/${type}/app.js.tpl`), path.join(__dirname,'../..',`target/templates/${type}/src/index.js`));
@@ -87,6 +94,7 @@ module.exports = (projectName, metadata, templates, type, persist=true) =>{
         
         fs.copySync(path.join(__dirname, `../assets/template/${type}/public`), path.join(__dirname,'../..',`target/templates/${type}/public`));
         fs.copySync(path.join(__dirname, `../assets/template/${type}/locales`), path.join(__dirname,'../..',`target/templates/${type}/src/locales`));
+        fs.copySync(path.join(__dirname, `../assets/template/${type}/pages`), path.join(__dirname,'../..',`target/templates/${type}/src/pages`));
     }
 
     return mapTemplates;

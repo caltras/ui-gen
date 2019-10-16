@@ -8,13 +8,17 @@ const fs = require('fs');
 const express = require('express')();
 var bodyParser = require('body-parser'); 
 var cors = require('cors');
-var whitelist = ['http://localhost:3000']
+var whitelist = ['http://localhost:3000', 'http://localhost:8000']
 var corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
+    if (origin){
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }else{
+        callback(null, true);
     }
   }
 }
@@ -44,18 +48,23 @@ const app  = () => {
         });
         return parent;
     }
-    this.getAction = (domain)=>{
+    this.$get = (domain, isRoot=false)=>{
         return (req, resp) => {
-            if (this.db[domain]){
+            if( isRoot){
                 resp.status(200);
-                resp.json(this.db[domain]);
-            } else{
-                resp.status(400);
-                resp.send();
+                resp.send('API');
+            } else {
+                if (this.db[domain]){
+                    resp.status(200);
+                    resp.json(this.db[domain]);
+                } else{
+                    resp.status(400);
+                    resp.send();
+                }
             }
         };
     }
-    this.postAction = (domain)=>{
+    this.$post = (domain)=>{
         return (req, resp) => {
             const body = req.body;
             if (this.db[domain]){
@@ -76,7 +85,7 @@ const app  = () => {
             }
         };
     }
-    this.putAction = (domain)=>{
+    this.$put = (domain)=>{
         return (req, resp) => {
             const body = req.body;
             if (this.db[domain]){
@@ -93,12 +102,12 @@ const app  = () => {
             }
         };
     }
-    this.deleteAction = (domain)=>{
+    this.$delete = (domain)=>{
         return (req, resp) => {
             const id = req.params.id;
             if (this.db[domain]){
-                this.db[domain].filter( (obj) => {
-                    return obj.id !== id;
+                this.db[domain] = this.db[domain].filter( (obj) => {
+                    return obj.id != id;
                 });
                 resp.status(200);
                 resp.send();
@@ -109,11 +118,14 @@ const app  = () => {
             }
         };
     }
-    this.createRoutes = (ref, key, prefix='')=>{
-        express.get(prefix+'/'+key, this.getAction(key));
-        express.post(prefix+'/'+key, this.postAction(key));
-        express.delete(prefix+'/'+key, this.deleteAction(key));
-        express.put(prefix+'/'+key, this.putAction(key));
+    this.createRoutes = (ref, key, prefix='', isRoot=false)=>{
+        express.get(prefix+'/'+key, this.$get(key, isRoot));
+        if (!isRoot){
+            express.get(prefix+'/'+key+'/:id', this.$get(key));
+            express.post(prefix+'/'+key, this.$post(key));
+            express.delete(prefix+'/'+key+'/:id', this.$delete(key));
+            express.put(prefix+'/'+key, this.$put(key));
+        }
         if (ref[key]){
             Object.keys(ref[key]).forEach( (r) => {
                 this.createRoutes(ref[key], r, prefix+'/'+key);
@@ -124,7 +136,7 @@ const app  = () => {
     this.run =  () => {
         this.routes = this.load(__dirname+'/mocks');
         Object.keys(this.routes).forEach( (r) => {
-            this.createRoutes(this.routes, r);
+            this.createRoutes(this.routes, r, '', true);
         });
         express.use( bodyParser.json());       // to support JSON-encoded bodies
         express.use(bodyParser.urlencoded({     // to support URL-encoded bodies

@@ -36,10 +36,10 @@ const table = (elements, domain, page, fields) =>{
                                 }) 
                             }
                             <td>
-                                <button onClick={(e) => handleDelete()}>{translate('label.delete')}</button>
+                                <button onClick={(e) => handleDelete(d.id, e) }>{translate('label.delete')}</button>
                             </td>
                             <td>
-                                <button onClick={(e) => handleEdit()}>{translate('label.edit')}</button>
+                                <Link to={"/user/update/" + d.id}>{translate('label.edit')}</Link>
                             </td>
                             </tr>);
                         })
