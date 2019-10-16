@@ -114,11 +114,13 @@ module.exports = (metadata) =>{
             if (page.fields){
                 
                 Object.keys(page.fields).forEach ( (f) =>{
-                    const templateInput = elementFactory(page.fields[f], k, f);
-                    const h = hooksUtil(page.fields[f], f);
-                    hooks.push(h);
-                    fields.push(f);
-                    templatePage.elements.push(templateInput);
+                    if (!page.fields[f].primaryKey){
+                        const templateInput = elementFactory(page.fields[f], k, f);
+                        const h = hooksUtil(page.fields[f], f);
+                        hooks.push(h);
+                        fields.push(f);
+                        templatePage.elements.push(templateInput);
+                    }
                     
                 });
                 templates[d][k] = form(templatePage.elements, d, k, hooks, fields);

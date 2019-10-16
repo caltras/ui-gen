@@ -9,7 +9,7 @@
     "mock-server": "node ./test/server.js",
     "kill-mock-server": "fuser -k 8000/tcp",
     "react": "npm start --prefix ./target/templates/react",
-    "react-server": "npm run kill-mock-server & npm run mock-server & npm start --prefix ./target/templates/react",
+    "react-server": "npm run kill-mock-server && npm run mock-server & npm run react",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -24,7 +24,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "mockserver": "^3.1.1",

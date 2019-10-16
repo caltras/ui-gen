@@ -3,7 +3,7 @@ var mockserver = require('mockserver');
  
 http.createServer(mockserver(__dirname+'/mocks')).listen(8000);
 */
-
+const uuid = require('uuid/v1');
 const fs = require('fs');
 const express = require('express')();
 var bodyParser = require('body-parser'); 
@@ -86,15 +86,15 @@ const app  = () => {
         };
     }
     this.$put = (domain)=>{
+        const self = this;
         return (req, resp) => {
             const body = req.body;
             if (this.db[domain]){
-                const idx = this.db[domain].findIndex (obj => {
-                    return obj.id = body.id;
-                });
-                this.db[domain][idx] = body;
+
+                body.id = uuid();
+                self.db[domain].push(body);
                 resp.status(200);
-                resp.json(this.db[domain][idx]);
+                resp.json(self.db[domain][body.id]);
             
             } else {
                 resp.status(500)
@@ -135,13 +135,15 @@ const app  = () => {
 
     this.run =  () => {
         this.routes = this.load(__dirname+'/mocks');
+        express.use( bodyParser.json());       // to support JSON-encoded bodies
+        express.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+            extended: false
+        }));
+
         Object.keys(this.routes).forEach( (r) => {
             this.createRoutes(this.routes, r, '', true);
         });
-        express.use( bodyParser.json());       // to support JSON-encoded bodies
-        express.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-            extended: true
-        }));
+        
         
         express.listen(8000);
     }

@@ -12,14 +12,16 @@ export default function {{className}}() {
             event.preventDefault();
         }
         if(!loading){
+            const body = JSON.stringify(getProperties());
             if (validate()) {
                 setLoading(true);
-                fetch(`{{url}}`, 
-                    { 
-                        method: '{{method}}', 
-                        body: getProperties() 
-                    })
-                .then( (response) =>{
+                fetch(`{{url}}`,{
+                    method: "PUT",
+                    body: body,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then( (response) =>{
                     setLoading(false);
                 }).catch((err) => {
                     setErrorMessage(err);
