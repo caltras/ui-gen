@@ -9,7 +9,7 @@
   justify-items: center;
   align-content: center;
   align-items: center;
-  width: 100%px;
+  width: 100%;
   padding: 20px;
   background-color: white;
 }
@@ -34,7 +34,9 @@
   list-style: none;
   padding-left: 20px;
 }
-
+.container {
+  width: 50%;
+}
 
 .container form {
   display: flex;
@@ -43,7 +45,6 @@
 
 .form-input {
   display: flex;
-  justify-content: ;
   justify-items: center;
   align-content: center;
   align-items: center;

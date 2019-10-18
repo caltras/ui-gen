@@ -29,10 +29,6 @@ export default function {{className}}() {
         });
     }    
 
-    const handleEdit = (id) =>{
-
-    }
-
     const handleDelete = (id) =>{
         fetch(`{{url}}/${id}`, 
         { 

@@ -16,7 +16,7 @@ const COMP_TYPE = {
     PASSWORD: "password",
     HIDDEN: "hidden",
     DATE: "date",
-    DATE_TIME: "date_time"
+    DATE_TIME: "datetime-local"
 };
 
 module.exports = {

@@ -55,8 +55,13 @@ const app  = () => {
                 resp.send('API');
             } else {
                 if (this.db[domain]){
-                    resp.status(200);
-                    resp.json(this.db[domain]);
+                    if (req.params.id){
+                        resp.status(200);
+                        resp.json(this.db[domain].find( v => v.id == req.params.id));
+                    } else {
+                        resp.status(200);
+                        resp.json(this.db[domain]);
+                    }
                 } else{
                     resp.status(400);
                     resp.send();

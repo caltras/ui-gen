@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import translate from 'counterpart';
+import { useParams } from "react-router-dom";
 
 export default function {{className}}() {
-    
+    let stateMaps = {};
     {{hooks}}
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState([]);
+    
+    const params = useParams();
+
+    {{functions}}
+
+    useEffect(() => {
+        {{startFunctions}}
+    }, []);
 
     const handleSubmit = (event) =>{
         if(event){
             event.preventDefault();
         }
+        const form = event.currentTarget;
         if(!loading){
             const body = JSON.stringify(getProperties());
             if (validate()) {
@@ -23,6 +33,9 @@ export default function {{className}}() {
                     }
                 }).then( (response) =>{
                     setLoading(false);
+                    if (form.reset){
+                        form.reset();
+                    }
                 }).catch((err) => {
                     setErrorMessage(err);
                     setLoading(false);
