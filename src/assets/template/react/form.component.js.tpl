@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import translate from 'counterpart';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function {{className}}() {
     let stateMaps = {};
@@ -44,7 +44,7 @@ export default function {{className}}() {
         }
         return null;
     }
-
+    
     const getProperties = () => {
         return { {{fields}} };
     }

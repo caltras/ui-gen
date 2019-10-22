@@ -30,9 +30,7 @@ class FormTemplate {
         return `<form action="/${this.domain}" method="${this.method}" onSubmit={handleSubmit}>
                         ${this.elements.join('')}
                         <div className="group-button">
-                            <button type="button" className="button cancel">
-                                ${translateService('label.cancel')}
-                            </button>
+                            <Link to="/${this.domain}/list">${translateService('label.cancel')}</Link>
                             <button type="submit" className="button submit">
                                 ${translateService('label.save')}
                             </button>
@@ -133,7 +131,9 @@ class ListTemplate extends PageTemplate{
     render(){
         const urlAPI = process.env['api-url'];
 
-        const template = `<table className="${this.domain}-list">
+        const template = `
+            <h1>${_.capitalize(this.domain)} - List</h1>
+            <table className="${this.domain}-list">
             <thead className="${this.domain}-list-thead">
                 <tr>
                     ${this.elements.join('')}<td></td><td></td>
